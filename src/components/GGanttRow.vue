@@ -1,5 +1,6 @@
 <template>
-  <div class="g-gantt-row" 
+  <div class="g-gantt-row"
+      ref="g-gantt-row"
       :style="{height: `${$parent.rowHeight}px`}"
     >
       <div class="g-gantt-row-title"
@@ -12,6 +13,8 @@
       <div class="g-gantt-row-bars-container"
           ref="barContainer"
           :style="barsContainerStyle"
+          @mouseover="onMouseover()"
+          @mouseleave="onMouseleave()"
       > 
         <g-gantt-bar v-for="(bar, index) in bars"
                     :key="`ganttastic_bar_${index}`"
@@ -45,10 +48,11 @@ export default {
     label: {type: String, default: "Row"},
     bars: {type: Array, default: () => []},
     barStart: {type: String, required: true}, // property name of the bar objects that represents the start datetime
-    barEnd: {type: String, required: true}  // property name of the bar objects that represents the end datetime
+    barEnd: {type: String, required: true},  // property name of the bar objects that represents the end datetime,
+    highlightOnHover: Boolean,
   },
 
-  inject: ["ganttChartProps"],
+  inject: ["ganttChartProps", "getThemeColors"],
 
   data(){
     return {
@@ -69,7 +73,7 @@ export default {
 
     barsContainerStyle(){
       return{
-        width: `${100 - this.ganttChartProps.rowTitleWidth.replace('%','')}%`
+        width: `${100 - this.ganttChartProps.rowTitleWidth.replace('%','')}%`,
       }
     }
 
@@ -81,6 +85,17 @@ export default {
   },
 
   methods:{
+
+    onMouseover(){
+      if(this.highlightOnHover){
+        this.$refs["g-gantt-row"].style.backgroundColor = this.getThemeColors().hoverHighlight
+      }
+    },
+
+    onMouseleave(){
+      this.$refs["g-gantt-row"].style.backgroundColor = null
+    },
+
     onWindowResize(){
       // re-initialize the barContainer DOMRect variable, which will trigger re-rendering in the gantt bars
       this.barContainer = this.$refs.barContainer.getBoundingClientRect() 

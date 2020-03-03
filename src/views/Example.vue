@@ -15,6 +15,7 @@
                     :key="row.title"
                     :label="row.label"
                     :bars="row.barList"
+                    :highlight-on-hover="highlightOnHover"
                     bar-start="myStart"
                     bar-end="myEnd"
         >
