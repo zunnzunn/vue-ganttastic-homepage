@@ -37,7 +37,7 @@
     <v-col cols="3">
       <v-row justify="center">
         <v-btn x-large color="primary" width="170">
-          <v-icon left> mdi-github </v-icon>
+          <v-icon left> mdi-git </v-icon>
           <span> Github</span>
         </v-btn>
       </v-row>
