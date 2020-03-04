@@ -7,7 +7,7 @@
                       :hide-timeaxis="hideTimeaxis"
                       :push-on-overlap="pushOnOverlap"
                       :highlighted-hours="highlightedHours"
-                      :row-title-width="`${rowTitleWidth}%`"
+                      :row-label-width="`${rowLabelWidth}%`"
                       :row-height="rowHeight"
                       :theme="selectedTheme"
       >
@@ -76,8 +76,8 @@
         </v-col>
 
         <v-col cols="3">
-          <v-slider v-model="rowTitleWidth"
-                    label="Row title width"
+          <v-slider v-model="rowLabelWidth"
+                    label="Row label width"
                     :min="10"
                     :max="50"
                     hide-details
@@ -130,7 +130,7 @@ export default {
       pushOnOverlap: true,
       grid: true,
       rowHeight: 40,
-      rowTitleWidth: 15,
+      rowLabelWidth: 15,
       hideTimeaxis: false,
       highlightOnHover: false,
       hours: [...Array(24).keys()],
@@ -246,6 +246,7 @@ export default {
 
 <style scoped>
   #ganttastic-wrapper{
-    height: 60vh;
+    height: 50vh;
+    overflow-y: auto;
   }
 </style>

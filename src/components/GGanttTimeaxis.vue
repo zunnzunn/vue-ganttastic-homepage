@@ -1,10 +1,10 @@
 <template>
   <div id="g-timeaxis">
     <div class="g-timeaxis-empty-space"
-        :style="{width: rowTitleWidth, background: themeColors.secondary}"
+        :style="{width: rowLabelWidth, background: themeColors.secondary}"
     />
     <div class="g-timeaxis-days"
-        :style="{width: `${100-rowTitleWidth.replace('%','')}%`}"
+        :style="{width: `${100-rowLabelWidth.replace('%','')}%`}"
     >
       <div v-for="(day, index) in axisDays"
           :key="day.text"
@@ -45,7 +45,7 @@ export default {
   props: {
     chartStart: String,
     chartEnd: String,
-    rowTitleWidth: String,
+    rowLabelWidth: String,
     timemarkerOffset: {type: Number, default: 0},
     locale: String,
     themeColors: Object

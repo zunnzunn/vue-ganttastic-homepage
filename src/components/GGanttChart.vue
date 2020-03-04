@@ -5,7 +5,7 @@
     <g-gantt-timeaxis v-if="!hideTimeaxis"
                       :chart-start="chartStart"
                       :chart-end="chartEnd"
-                      :row-title-width="rowTitleWidth"
+                      :row-label-width="rowLabelWidth"
                       :timemarker-offset="timemarkerOffset"
                       :theme-colors="themeColors"
                       :locale="locale"
@@ -14,7 +14,7 @@
     <g-gantt-grid v-if="grid"
                   :chart-start="chartStart"
                   :chart-end="chartEnd"
-                  :row-title-width="rowTitleWidth"
+                  :row-label-width="rowLabelWidth"
                   :highlighted-hours="highlightedHours"
     />
     
@@ -43,7 +43,7 @@ export default {
     chartStart: {type: String, default: moment().startOf("day").format("YYYY-MM-DD HH:mm:ss")},
     chartEnd: {type: String, default: moment().startOf("day").add(12,"hours").format("YYYY-MM-DD HH:mm:ss")},
     hideTimeaxis: Boolean,
-    rowTitleWidth: {type: String, default: "10%"}, // the width of the row title in %
+    rowLabelWidth: {type: String, default: "10%"},
     rowHeight: {type: Number, default: 40},
     locale: {type: String, default: "en"},
     theme: String,

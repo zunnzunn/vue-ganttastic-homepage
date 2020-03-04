@@ -3,8 +3,8 @@
       ref="g-gantt-row"
       :style="{height: `${$parent.rowHeight}px`}"
     >
-      <div class="g-gantt-row-title"
-          :style="rowTitleStyle"
+      <div class="g-gantt-row-label"
+          :style="rowLabelStyle"
       >
         <slot name="label">
           {{label}}
@@ -62,9 +62,9 @@ export default {
 
   computed:{
 
-    rowTitleStyle(){
+    rowLabelStyle(){
       return {
-        width: this.ganttChartProps.rowTitleWidth,
+        width: this.ganttChartProps.rowLabelWidth,
         height: this.ganttChartProps.rowHeight,
         background: this.$parent.themeColors.ternary,
         color: this.$parent.themeColors.text
@@ -73,7 +73,7 @@ export default {
 
     barsContainerStyle(){
       return{
-        width: `${100 - this.ganttChartProps.rowTitleWidth.replace('%','')}%`,
+        width: `${100 - this.ganttChartProps.rowLabelWidth.replace('%','')}%`,
       }
     }
 
@@ -103,7 +103,7 @@ export default {
   },
 
   watch:{
-    'ganttChartProps.rowTitleWidth' : function(){
+    'ganttChartProps.rowLabelWidth' : function(){
       this.barContainer = this.$refs.barContainer.getBoundingClientRect() 
     }
   }
@@ -117,7 +117,7 @@ export default {
     height: 40px;
   }
 
-  .g-gantt-row > .g-gantt-row-title{
+  .g-gantt-row > .g-gantt-row-label{
     display: flex;
     justify-content: center;
     align-items: center;

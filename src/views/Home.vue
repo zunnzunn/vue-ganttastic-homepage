@@ -1,4 +1,5 @@
 <template>
+  <v-container>
   <v-row justify="center">
 
     <v-col cols="6">
@@ -17,31 +18,32 @@
 
     <v-col cols="3">
       <v-row justify="center">
-        <v-btn x-large color="primary">
-          <v-icon left> mdi-information </v-icon>
-          <span> Get started </span>
+        <v-btn x-large color="primary" width="170">
+          <v-icon left> mdi-file-document </v-icon>
+          <span> Docs </span>
         </v-btn>
       </v-row>
     </v-col>
 
     <v-col cols="3">
-      <v-row justify="center">
-        <v-btn x-large color="primary" to="example">
+      <v-row justify="center" >
+        <v-btn x-large color="primary" to="example" width="170">
           <v-icon left> mdi-chart-gantt </v-icon>
-          <span>Usage example</span>
+          <span>Example</span>
         </v-btn>
       </v-row>
     </v-col>
 
     <v-col cols="3">
       <v-row justify="center">
-        <v-btn x-large color="primary">
+        <v-btn x-large color="primary" width="170">
           <v-icon left> mdi-github </v-icon>
           <span> Github</span>
         </v-btn>
       </v-row>
     </v-col>
   </v-row>
+  </v-container>
 </template>
 
 <script>

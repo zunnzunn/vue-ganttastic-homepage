@@ -1,8 +1,8 @@
 <template>
   <div class="g-grid-container"
       :style="{
-        left: rowTitleWidth,
-        width: `${100-(this.rowTitleWidth).replace('%','')}%`
+        left: rowLabelWidth,
+        width: `${100-(this.rowLabelWidth).replace('%','')}%`
       }"
   >
       <div v-for="(hour,index) in allHours"
@@ -23,7 +23,7 @@
     props: {
       chartStart: {type: String},
       chartEnd: {type: String},
-      rowTitleWidth: String,
+      rowLabelWidth: String,
       highlightedHours: {type: Array, default: () => []}
     },
 
