@@ -102,6 +102,10 @@ export default {
     user-select: none;
   }
 
+  #g-gantt-chart >>> * {
+    font-family: Roboto, Verdana;
+  }
+
   #g-gantt-rows-container{
     position: relative;
   }

@@ -19,8 +19,8 @@
     <v-col cols="3">
       <v-row justify="center">
         <v-btn x-large color="primary" width="170">
-          <v-icon left> mdi-file-document </v-icon>
-          <span> Docs </span>
+          <v-icon left>mdi-file-document</v-icon>
+          <span>Docs</span>
         </v-btn>
       </v-row>
     </v-col>
@@ -28,7 +28,7 @@
     <v-col cols="3">
       <v-row justify="center" >
         <v-btn x-large color="primary" to="example" width="170">
-          <v-icon left> mdi-chart-gantt </v-icon>
+          <v-icon left>mdi-chart-gantt</v-icon>
           <span>Example</span>
         </v-btn>
       </v-row>
@@ -37,8 +37,8 @@
     <v-col cols="3">
       <v-row justify="center">
         <v-btn x-large color="primary" width="170">
-          <v-icon left> mdi-git </v-icon>
-          <span> Github</span>
+          <v-icon left>mdi-git</v-icon>
+          <span>Github</span>
         </v-btn>
       </v-row>
     </v-col>
@@ -47,7 +47,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Home',
 }

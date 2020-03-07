@@ -4,7 +4,7 @@ export default{
     secondary: "#E0E0E0",
     ternary: "#F5F5F5",
     hoverHighlight: "rgba(204, 216, 219, 0.5)",
-    text: "#262626",
+    text: "#404040",
     background: "white"
   
   },

@@ -20,9 +20,8 @@
           <div  v-for="hour in day.ganttHours"
                 :key="hour.fullDatetime"
                 class="g-timeaxis-hour" 
-                :style="{fontSize: hourFontSize}"
           >
-            <span>{{hour.text}}</span>
+            <span :style="{fontSize: hourFontSize}">{{hour.text}}</span>
             <div class="g-timeaxis-hour-pin"
                 :style="{background: themeColors.text}"
             />
@@ -56,7 +55,7 @@ export default {
       axisDays: [],
       hourCount: null,
       timemarker: null,
-      hourFontSize: "0.9em",
+      hourFontSize: "11px",
       dayFormat: "dddd, DD. MMMM"
     }
   },
@@ -111,7 +110,7 @@ export default {
 
     onWindowResize(){
       this.horizontalAxisContainer = document.querySelector("#g-timeaxis").getBoundingClientRect()
-      this.hourFontSize = Math.min(11, 0.75*(this.horizontalAxisContainer.width/this.hourCount))+"px"
+      this.hourFontSize = Math.min(9.5, 0.75*(this.horizontalAxisContainer.width/this.hourCount))+"px"
     },
 
     dayFormatted(day){  // do not display day text if the day is smaller than 12%

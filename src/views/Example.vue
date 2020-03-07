@@ -19,8 +19,14 @@
                     bar-start="myStart"
                     bar-end="myEnd"
         >
-          <template #bar-label>
-            Test
+          <template #bar-label="{bar}">
+            <img v-if="bar.image"
+                :src="require(`@/assets/${bar.image}`)"
+                height="20"
+                width="20"
+                class="mr-1"
+            >
+            <span>{{bar.label}}</span>
           </template>
         </g-gantt-row>
       </g-gantt-chart>
@@ -160,12 +166,14 @@ export default {
             {
               myStart: "2019-03-03 06:00",
               myEnd: "2019-03-03 12:00",
-              image: "logo_no_text.png",
+              image: "vue_ganttastic_logo_no_text.png",
+              label: "I have an image",
               ganttBarConfig: {color:"white", backgroundColor: "#de3b26", bundle:"myBundle"}
             },
             {
               myStart: "2019-03-03 13:00",
               myEnd: "2019-03-03 18:00",
+              label: "I cannot be moved",
               ganttBarConfig: {color:"white", backgroundColor: "#2e74a3",opacity: 0.5, immobile: true}
             }
           ]
@@ -177,21 +185,25 @@ export default {
             {
               myStart: "2019-03-03 06:00",
               myEnd: "2019-03-03 12:00",
+              label: "Bar",
               ganttBarConfig: {color:"white", backgroundColor: "#de3b26", bundle: "myBundle"}
             },
             {
               myStart: "2019-03-03 01:30",
               myEnd: "2019-03-03 05:00",
+              label: "With handles!",
               ganttBarConfig: {color:"white", backgroundColor: "#a23def", handles: true}
             },
             {
               myStart: "2019-03-02 23:00",
               myEnd: "2019-03-03 01:00",
+              label: "Bar",
               ganttBarConfig: {color:"white", backgroundColor: "#5effad"}
             },
             {
               myStart: "2019-03-03 14:00",
               myEnd: "2019-03-03 20:00",
+              label: "Woooow!",
               ganttBarConfig: {color:"white", background: "repeating-linear-gradient(45deg,#de7359,#de7359 10px,#ffc803 10px,#ffc803 20px)"}
             }, 
           ]
@@ -203,11 +215,13 @@ export default {
             {
               myStart: "2019-03-03 14:30",
               myEnd: "2019-03-03 20:00",
+              label: "Bar",
               ganttBarConfig:{color:"white", backgroundColor: "#d18aaf", handles: true}
             },
             {
               myStart: "2019-03-03 00:30",
               myEnd: "2019-03-03 05:00",
+              label: "Rectangular",
               ganttBarConfig: {color:"white", backgroundColor: "#f2840f", borderRadius: 0}
             }, 
           ]
