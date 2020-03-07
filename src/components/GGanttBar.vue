@@ -34,6 +34,7 @@ export default {
 
   data(){
     return {
+      isDragging: false,
       cursorOffsetX: null,
       mousemoveCallback: null,  // gets initialized when starting to drag
                                 // possible values: drag, dragByHandleLeft, dragByHandleRight
@@ -65,14 +66,15 @@ export default {
       return this.bar.ganttBarConfig || {}
     },
 
-    barStyle(){
+    barStyle(){ 
       let xStart = this.mapTimeToPosition(this.barStartMoment)
       let xEnd = this.mapTimeToPosition(this.barEndMoment)
       return {
         ...(this.barConfig || {}),
         left: `${xStart}px`,
         width: `${xEnd - xStart}px`,
-        height: `${this.ganttChartProps.rowHeight-6}px`
+        height: `${this.ganttChartProps.rowHeight-6}px`,
+        zIndex: this.isDragging ? 2 : 1
       }
     },
 
@@ -99,6 +101,7 @@ export default {
     /* ------------- METHODS FOR DRAGGING THE BAR -------------- */
     /* --------------------------------------------------------- */
     initDrag(mousedownEvent){
+      this.isDragging = true
       let barX = this.$refs["g-gantt-bar"].getBoundingClientRect().left
       this.cursorOffsetX = mousedownEvent.clientX - barX
       let mousedownType = mousedownEvent.target.className
@@ -146,9 +149,9 @@ export default {
       this.manageOverlapping()
     },
 
-    endDrag(e){
+    endDrag(){
+      this.isDragging = false
       document.body.style.cursor = "auto"
-      e
       window.removeEventListener("mousemove", this.mousemoveCallback)
       window.removeEventListener("mouseup", this.endDrag)
     },

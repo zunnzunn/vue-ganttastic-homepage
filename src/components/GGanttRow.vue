@@ -115,6 +115,7 @@ export default {
     display: flex;
     width: 100%;
     height: 40px;
+    transition: background-color 0.2s;
   }
 
   .g-gantt-row > .g-gantt-row-label{
