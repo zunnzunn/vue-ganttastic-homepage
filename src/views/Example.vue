@@ -183,9 +183,9 @@ export default {
           label: "Row #2",
           barList: [
             {
-              myStart: "2019-03-03 06:00",
-              myEnd: "2019-03-03 12:00",
-              label: "Bar",
+              myStart: "2019-03-03 09:00",
+              myEnd: "2019-03-03 13:00",
+              label: "I am with stupid ^",
               ganttBarConfig: {color:"white", backgroundColor: "#de3b26", bundle: "myBundle"}
             },
             {

@@ -30,7 +30,7 @@ export default {
     allBarsInRow: {type: Array}
   },
 
-  inject: ["getHourCount", "ganttChartProps", "initDragOfBarsFromBundle"],
+  inject: ["getHourCount", "ganttChartProps", "initDragOfBarsFromBundle", "moveBarsFromBundleOfPushedBar"],
 
   data(){
     return {
@@ -173,12 +173,12 @@ export default {
         let overlapStartMoment = moment(overlapBar[this.barStart])
         let overlapEndMoment  = moment(overlapBar[this.barEnd])
         switch(overlapType){
-          case -1:  // overlapping on the left
+          case "left":
             minuteDiff = overlapEndMoment.diff(currentStartMoment, "minutes", true)
             overlapBar[this.barEnd] = currentBar[this.barStart]
             overlapBar[this.barStart] = overlapStartMoment.subtract(minuteDiff, "minutes", true)
             break
-          case 1: // overlapping on the right
+          case "right":
             minuteDiff = currentEndMoment.diff(overlapStartMoment, "minutes", true)
             overlapBar[this.barStart] = currentBar[this.barEnd]
             overlapBar[this.barEnd] = overlapEndMoment.add(minuteDiff, "minutes", true)
@@ -187,6 +187,7 @@ export default {
             console.warn("One bar is inside of the other one! This should never occur while push-on-overlap is active!")
             return
         }
+        this.moveBarsFromBundleOfPushedBar(overlapBar, minuteDiff, overlapType)
         currentBar = overlapBar;
         ({overlapBar, overlapType} = this.getOverlapBarAndType(overlapBar))
       }
@@ -208,8 +209,27 @@ export default {
                           || otherBarEnd.isBetween(barStartMoment, barEndMoment)
         return overlapLeft || overlapRight || overlapInBetween
       })
-      let overlapType = overlapLeft ? -1 : (overlapRight ? 1 : (overlapInBetween ? 0 : null))
+      let overlapType = overlapLeft ? "left" : (overlapRight ? "right" : (overlapInBetween ? "between" : null))
       return {overlapBar, overlapType}
+    },
+
+    // this is used in GGanttChart, when a bar from a bundle is pushed
+    // so that bars from its bundle also get pushed
+    moveBarByMinutesAndPush(minuteCount, direction){
+      switch(direction){
+        case "left":
+          this.barStartMoment = moment(this.barStartMoment).subtract(minuteCount, "minutes", true)
+          this.barEndMoment = moment(this.barEndMoment).subtract(minuteCount, "minutes", true)
+          break
+        case "right":
+          this.barStartMoment = moment(this.barStartMoment).add(minuteCount, "minutes", true)
+          this.barEndMoment = moment(this.barEndMoment).add(minuteCount, "minutes", true)
+          break
+        default:
+          console.warn("wrong direction in moveBarByMinutesAndPush")
+          return
+      }
+      this.manageOverlapping()
     },
 
     /* --------------------------------------------------------- */

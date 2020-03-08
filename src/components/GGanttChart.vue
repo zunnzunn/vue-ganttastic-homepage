@@ -71,22 +71,42 @@ export default {
 
     themeColors(){
       return GanttasticThemeColors[this.theme] || GanttasticThemeColors.default
+    },
+
+    ganttBarChildrenList(){
+      let ganttBarChildren = []
+      let ganttRowChildrenList = this.$children.filter(childComp => childComp.$options.name === GGanttRow.name)
+      ganttRowChildrenList.forEach(row => {
+        let ganttBarChildrenOfRow = row.$children.filter(childComp => childComp.$options.name === GGanttBar.name)
+        ganttBarChildren.push(...ganttBarChildrenOfRow)
+      })
+      return ganttBarChildren
     }
 
   },
 
   methods: {
+
     initDragOfBarsFromBundle(bundleId, e){
-      if(bundleId === null || bundleId === undefined){
+      if(bundleId === undefined || bundleId === null){
         return
       }
-      let gGanttRowList = this.$children.filter(childComp => childComp.$options.name === GGanttRow.name)
-      gGanttRowList.forEach(row => {
-        row.$children.forEach(childComp => {
-          if(childComp.$options.name === GGanttBar.name && childComp.barConfig.bundle === bundleId){
-            childComp.initDrag(e)
-          }
-        })
+      this.ganttBarChildrenList.forEach(ganttBarChild => {
+        if(ganttBarChild.barConfig.bundle === bundleId){
+          ganttBarChild.initDrag(e)
+        }
+      })
+    },
+
+    moveBarsFromBundleOfPushedBar(pushedBar, minuteDiff, overlapType){
+      let bundleId = pushedBar.ganttBarConfig.bundle
+      if(bundleId === undefined || bundleId === null){
+        return
+      }
+      this.ganttBarChildrenList.forEach(ganttBarChild => {
+        if(ganttBarChild.barConfig.bundle === bundleId && ganttBarChild.bar !== pushedBar){
+          ganttBarChild.moveBarByMinutesAndPush(minuteDiff, overlapType)
+        }
       })
     }
 
@@ -101,7 +121,8 @@ export default {
       getHourCount: () => this.hourCount,
       ganttChartProps: this.$props,
       getThemeColors: () => this.themeColors,
-      initDragOfBarsFromBundle: (bundleId, e) => this.initDragOfBarsFromBundle(bundleId, e)
+      initDragOfBarsFromBundle: (bundleId, e) => this.initDragOfBarsFromBundle(bundleId, e),
+      moveBarsFromBundleOfPushedBar: (bar, minuteDiff, overlapType) => this.moveBarsFromBundleOfPushedBar(bar, minuteDiff, overlapType)
     }
   }
 }
