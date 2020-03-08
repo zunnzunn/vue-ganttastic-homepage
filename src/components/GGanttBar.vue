@@ -30,7 +30,7 @@ export default {
     allBarsInRow: {type: Array}
   },
 
-  inject: ["getHourCount", "ganttChartProps"],
+  inject: ["getHourCount", "ganttChartProps", "initDragOfBarsFromBundle"],
 
   data(){
     return {
@@ -94,17 +94,21 @@ export default {
       if(e.button === 2){   // ignore right-click contextmenu
         return
       }
-      this.initDrag(e)
+      if(this.barConfig.bundle !== null && this.barConfig.bundle !== undefined){
+        this.initDragOfBarsFromBundle(this.barConfig.bundle, e)
+      } else {
+        this.initDrag(e)
+      }
     },
 
     /* --------------------------------------------------------- */
     /* ------------- METHODS FOR DRAGGING THE BAR -------------- */
     /* --------------------------------------------------------- */
-    initDrag(mousedownEvent){
+    initDrag(e){  // "e" must be the mousedown event
       this.isDragging = true
       let barX = this.$refs["g-gantt-bar"].getBoundingClientRect().left
-      this.cursorOffsetX = mousedownEvent.clientX - barX
-      let mousedownType = mousedownEvent.target.className
+      this.cursorOffsetX = e.clientX - barX
+      let mousedownType = e.target.className
       switch(mousedownType){
         case "g-gantt-bar-handle-left":
           document.body.style.cursor = "w-resize"

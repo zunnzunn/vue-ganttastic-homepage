@@ -29,6 +29,8 @@ import moment from 'moment'
 import GanttasticThemeColors from './GanttasticThemeColors.js'
 import GGanttTimeaxis from './GGanttTimeaxis'
 import GGanttGrid from './GGanttGrid'
+import GGanttRow from './GGanttRow'
+import GGanttBar from './GGanttBar'
 
 export default {
 
@@ -72,6 +74,23 @@ export default {
     }
 
   },
+
+  methods: {
+    initDragOfBarsFromBundle(bundleId, e){
+      if(bundleId === null || bundleId === undefined){
+        return
+      }
+      let gGanttRowList = this.$children.filter(childComp => childComp.$options.name === GGanttRow.name)
+      gGanttRowList.forEach(row => {
+        row.$children.forEach(childComp => {
+          if(childComp.$options.name === GGanttBar.name && childComp.barConfig.bundle === bundleId){
+            childComp.initDrag(e)
+          }
+        })
+      })
+    }
+
+  },
   
   // all child components of GGanttChart may have access to
   // the following values by using Vue's "inject" option:
@@ -81,8 +100,8 @@ export default {
       getChartEnd: () => this.chartEnd,
       getHourCount: () => this.hourCount,
       ganttChartProps: this.$props,
-      getThemeColors: () => this.themeColors
-      
+      getThemeColors: () => this.themeColors,
+      initDragOfBarsFromBundle: (bundleId, e) => this.initDragOfBarsFromBundle(bundleId, e)
     }
   }
 }
