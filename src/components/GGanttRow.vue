@@ -75,7 +75,7 @@ export default {
       return{
         width: `${100 - this.ganttChartProps.rowLabelWidth.replace('%','')}%`,
       }
-    }
+    },
 
   },
 

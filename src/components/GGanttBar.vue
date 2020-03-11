@@ -30,10 +30,18 @@ export default {
     allBarsInRow: {type: Array}
   },
 
-  inject: ["getHourCount", "ganttChartProps", "initDragOfBarsFromBundle", "moveBarsFromBundleOfPushedBar"],
+  inject: [
+    "getHourCount",
+    "ganttChartProps",
+    "initDragOfBarsFromBundle",
+    "moveBarsFromBundleOfPushedBar",
+    "setDragLimitsOfGanttBar"
+  ],
 
   data(){
     return {
+      dragLimitLeft: null,
+      dragLimitRight: null,
       isDragging: false,
       cursorOffsetX: null,
       mousemoveCallback: null,  // gets initialized when starting to drag
@@ -91,9 +99,10 @@ export default {
 
     onMousedown(e){
       e.preventDefault()
-      if(e.button === 2){   // ignore right-click contextmenu
+      if(e.button === 2 || this.barConfig.immobile){
         return
       }
+      this.setDragLimitsOfGanttBar(this)
       if(this.barConfig.bundle !== null && this.barConfig.bundle !== undefined){
         this.initDragOfBarsFromBundle(this.barConfig.bundle, e)
       } else {
@@ -128,6 +137,9 @@ export default {
       let barWidth = this.$refs["g-gantt-bar"].getBoundingClientRect().width
       let newXStart = (e.clientX-this.barContainer.left) - this.cursorOffsetX
       let newXEnd = newXStart + barWidth
+      if(this.isPosOutOfDragRange(newXStart, newXEnd)){
+        return
+      }
       this.barStartMoment = this.mapPositionToTime(newXStart)
       this.barEndMoment = this.mapPositionToTime(newXEnd)
       this.manageOverlapping()
@@ -136,7 +148,7 @@ export default {
     dragByHandleLeft(e){
       let newXStart = e.clientX - this.barContainer.left
       let newStartMoment = this.mapPositionToTime(newXStart)
-      if(newStartMoment.isSameOrAfter(this.barEndMoment)){
+      if(newStartMoment.isSameOrAfter(this.barEndMoment) || this.isPosOutOfDragRange(newXStart, null)){
         return
       }
       this.barStartMoment = newStartMoment
@@ -146,15 +158,27 @@ export default {
     dragByHandleRight(e){
       let newXEnd = e.clientX - this.barContainer.left
       let newEndMoment = this.mapPositionToTime(newXEnd)
-      if(newEndMoment.isSameOrBefore(this.barStartMoment)){
+      if(newEndMoment.isSameOrBefore(this.barStartMoment) || this.isPosOutOfDragRange(null, newXEnd)){
         return
       }
       this.barEndMoment = newEndMoment
       this.manageOverlapping()
     },
 
+    isPosOutOfDragRange(xStart, xEnd){
+      if(xStart && this.dragLimitLeft !== null && xStart < this.dragLimitLeft+2){
+        return true
+      }
+      if(xEnd && this.dragLimitRight !== null && xEnd > this.dragLimitRight-2){
+        return true
+      }
+      return false
+    },
+
     endDrag(){
       this.isDragging = false
+      this.dragLimitLeft = null
+      this.dragLimitRight = null
       document.body.style.cursor = "auto"
       window.removeEventListener("mousemove", this.mousemoveCallback)
       window.removeEventListener("mouseup", this.endDrag)

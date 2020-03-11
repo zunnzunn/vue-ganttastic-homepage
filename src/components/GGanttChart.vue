@@ -87,6 +87,13 @@ export default {
 
   methods: {
 
+    getBarsFromBundle(bundleId){
+      if(bundleId === undefined || bundleId === null){
+        return []
+      }
+      return this.ganttBarChildrenList.filter(ganttBarChild => ganttBarChild.barConfig.bundle === bundleId)
+    },
+
     initDragOfBarsFromBundle(bundleId, e){
       if(bundleId === undefined || bundleId === null){
         return
@@ -108,7 +115,113 @@ export default {
           ganttBarChild.moveBarByMinutesAndPush(minuteDiff, overlapType)
         }
       })
+    },
+
+    // ------------------------------------------------------------------------
+    // --------  METHODS FOR SETTING THE DRAG LIMIT OF A BAR   ----------------
+    // ------------------------------------------------------------------------
+
+    // how far you can drag a bar depends on the position of the closest immobile bar
+    // note that if a bar from the same row belongs to a bundle
+    // other rows might need to be taken into consideration, too
+    setDragLimitsOfGanttBar(bar){
+      for(let side of ["left", "right"]){
+        let [totalGapDistance, bundleBarsOnPath] = this.countGapDistanceToNextImmobileBar(bar, 0, side)
+        for(let i=0; i< bundleBarsOnPath.length; i++){
+          let barFromBundle = bundleBarsOnPath[i].bar
+          let gapDist = bundleBarsOnPath[i].gapDistance
+          let otherBarsFromBundle = this.getBarsFromBundle(barFromBundle.barConfig.bundle).filter(otherBar => otherBar !== barFromBundle)
+          otherBarsFromBundle.forEach(otherBar => {
+            let [newGapDistance, newBundleBars] = this.countGapDistanceToNextImmobileBar(otherBar, gapDist, side)
+            if(newGapDistance !== null && (newGapDistance < totalGapDistance || !totalGapDistance)){
+              totalGapDistance = newGapDistance
+            }
+            newBundleBars.forEach(newBundleBar => {
+              if(!bundleBarsOnPath.find(barAndGap => barAndGap.bar === newBundleBar.bar)){
+                bundleBarsOnPath.push(newBundleBar)
+              }
+            })
+          })
+        }
+        if(totalGapDistance && side === "left"){
+          bar.dragLimitLeft = bar.$el.offsetLeft -  totalGapDistance
+        } else if(totalGapDistance && side === "right"){
+          bar.dragLimitRight = bar.$el.offsetLeft+ bar.$el.offsetWidth + totalGapDistance
+        }
+      }
+      // all bars from the bundle of the clicked bar need to have the same drag limit:
+      let barsFromBundleOfClickedBar = this.getBarsFromBundle(bar.barConfig.bundle)
+      barsFromBundleOfClickedBar.forEach(barFromBundle => {
+        barFromBundle.dragLimitLeft = bar.dragLimitLeft 
+        barFromBundle.dragLimitRight = bar.dragLimitRight
+      })
+    },
+    
+    // returns the gap distance to the next immobile bar
+    // in the row where the given bar (parameter) is (added to gapDistanceSoFar)
+    // and a list of all bars on that path that belong to a bundle
+    countGapDistanceToNextImmobileBar(bar, gapDistanceSoFar, side="left"){
+      let bundleBarsAndGapDist = bar.barConfig.bundle ? [{bar, gapDistance: gapDistanceSoFar}] : []
+      let currentBar = bar
+      let nextBar = this.getNextGanttBar(currentBar, side)
+      // left side:
+      if(side === "left"){
+        while(nextBar){
+          let nextBarOffsetRight = nextBar.$el.offsetLeft + nextBar.$el.offsetWidth
+          gapDistanceSoFar += currentBar.$el.offsetLeft - nextBarOffsetRight
+          if(nextBar.barConfig.immobile){
+            return [gapDistanceSoFar, bundleBarsAndGapDist]
+          } else if(nextBar.barConfig.bundle){
+            bundleBarsAndGapDist.push({bar: nextBar, gapDistance: gapDistanceSoFar})
+          }
+          currentBar = nextBar
+          nextBar = this.getNextGanttBar(nextBar, "left")
+        }
+      }
+      if(side === "right"){
+        while(nextBar){
+          let currentBarOffsetRight = currentBar.$el.offsetLeft + currentBar.$el.offsetWidth
+          gapDistanceSoFar += nextBar.$el.offsetLeft - currentBarOffsetRight
+          if(nextBar.barConfig.immobile){
+            return [gapDistanceSoFar, bundleBarsAndGapDist]
+          } else if(nextBar.barConfig.bundle){
+            bundleBarsAndGapDist.push({bar: nextBar, gapDistance: gapDistanceSoFar})
+          }
+          currentBar = nextBar
+          nextBar = this.getNextGanttBar(nextBar, "right")
+        }
+      }
+      return [null, bundleBarsAndGapDist]
+    },
+
+    getNextGanttBar(bar, side="left"){
+      let allBarsLeftOrRight = []
+      if(side === "left"){
+        allBarsLeftOrRight = bar.$parent.$children.filter(gBar => {
+          return gBar.$parent === bar.$parent && gBar.$el.offsetLeft < bar.$el.offsetLeft
+        })
+      } else {
+        allBarsLeftOrRight = bar.$parent.$children.filter(gBar => {
+          return gBar.$parent === bar.$parent && gBar.$el.offsetLeft > bar.$el.offsetLeft
+        })
+      }
+      if(allBarsLeftOrRight.length > 0){
+        return allBarsLeftOrRight.reduce(
+          (bar1, bar2) => {
+            let bar1Dist = Math.abs(bar1.$el.offsetLeft - bar.$el.offsetLeft)
+            let bar2Dist = Math.abs(bar2.$el.offsetLeft - bar.$el.offsetLeft)
+            return bar1Dist < bar2Dist ? bar1 : bar2
+          },
+          allBarsLeftOrRight[0]
+        )
+      } else {
+        return null
+      }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
   },
   
@@ -122,7 +235,8 @@ export default {
       ganttChartProps: this.$props,
       getThemeColors: () => this.themeColors,
       initDragOfBarsFromBundle: (bundleId, e) => this.initDragOfBarsFromBundle(bundleId, e),
-      moveBarsFromBundleOfPushedBar: (bar, minuteDiff, overlapType) => this.moveBarsFromBundleOfPushedBar(bar, minuteDiff, overlapType)
+      moveBarsFromBundleOfPushedBar: (bar, minuteDiff, overlapType) => this.moveBarsFromBundleOfPushedBar(bar, minuteDiff, overlapType),
+      setDragLimitsOfGanttBar : (ganttBar) => this.setDragLimitsOfGanttBar(ganttBar)
     }
   }
 }
