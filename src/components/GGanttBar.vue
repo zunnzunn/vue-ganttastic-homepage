@@ -1,18 +1,37 @@
 <template>
-  <div class="g-gantt-bar" 
-      ref="g-gantt-bar"
-      :style="barStyle"
-      @mousedown.stop="onMousedown($event)"
-  >
-    <div class="g-gantt-bar-label">
-      <slot name="bar-label" :bar="bar">
-        {{barConfig.label || ""}}
-      </slot>
+  <div>
+    <div class="g-gantt-bar" 
+        ref="g-gantt-bar"
+        :style="barStyle"
+        @mouseenter.stop="onMouseenter($event)"
+        @mouseleave.stop ="onMouseleave($event)"
+        @mousedown.stop="onMousedown($event)"
+    >
+      <div class="g-gantt-bar-label">
+        <slot name="bar-label" :bar="bar">
+          {{barConfig.label || ""}}
+        </slot>
+      </div>
+      <template v-if="barConfig.handles">
+        <div class="g-gantt-bar-handle-left"/>
+        <div class="g-gantt-bar-handle-right"/>
+      </template>
     </div>
-    <template v-if="barConfig.handles">
-      <div class="g-gantt-bar-handle-left"/>
-      <div class="g-gantt-bar-handle-right"/>
-    </template>
+
+    <transition name="fade" mode="out-in">
+      <div v-if="showTooltip || isDragging"
+          class="g-gantt-tooltip"
+          :style="tooltipStyle"
+      >
+        <div class="color-indicator"
+            :style="{background: this.barStyle.background || this.barStyle.backgroundColor}"
+        />
+        {{bar[barStart] | TimeFilter}}
+        - 
+        {{bar[barEnd] | TimeFilter}}
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -40,10 +59,12 @@ export default {
 
   data(){
     return {
+      showTooltip: false,
+      tooltipTimeout: null,
       dragLimitLeft: null,
       dragLimitRight: null,
       isDragging: false,
-      cursorOffsetX: null,
+      cursorOffsetX: 0,
       mousemoveCallback: null,  // gets initialized when starting to drag
                                 // possible values: drag, dragByHandleLeft, dragByHandleRight
     }
@@ -86,6 +107,13 @@ export default {
       }
     },
 
+    tooltipStyle(){
+      return{
+        left: this.barStyle.left,
+        top:`${this.ganttChartProps.rowHeight}px`,
+      }
+    },
+
     chartStartMoment(){
       return moment(this.ganttChartProps.chartStart)
     },
@@ -96,6 +124,18 @@ export default {
   },
 
   methods:{
+
+    onMouseenter(){
+      if(this.tooltipTimeout){
+        clearTimeout(this.tooltipTimeout)
+      }
+      this.tooltipTimeout = setTimeout(() => this.showTooltip = true, 800)
+    },
+
+    onMouseleave(){
+      clearTimeout(this.tooltipTimeout)
+      this.showTooltip = false
+    },
 
     onMousedown(e){
       e.preventDefault()
@@ -268,6 +308,12 @@ export default {
       let hourDiffFromStart = (xPos/this.barContainer.width)*this.getHourCount()
       return this.chartStartMoment.clone().add(hourDiffFromStart, "hours")
     },
+  },
+
+  filters:{
+    TimeFilter(value){
+      return moment(value).format("HH:mm")
+    }
   }
 
 }
@@ -325,5 +371,55 @@ export default {
 
   .g-gantt-bar-label img {
     pointer-events: none;
+  }
+
+  .g-gantt-tooltip{
+    position: absolute;
+    background: black;
+    color: white;
+    z-index: 3;
+    font-size: 0.70em;
+    padding: 3px;
+    border-radius: 3px;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+  }
+
+  .g-gantt-tooltip:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom-color: black;
+    border-top: 0;
+    margin-left: -5px;
+    margin-top: -5px;
+  }
+
+  .g-gantt-tooltip > .color-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    margin-right: 4px;
+  }
+
+  .fade-enter-active {
+    animation: fade-in .3s;
+  }
+
+  .fade-leave-active {
+    animation: fade-in .3s reverse;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    } to {
+      opacity: 1;
+    }
   }
 </style>

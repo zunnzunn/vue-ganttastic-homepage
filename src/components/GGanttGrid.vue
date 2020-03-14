@@ -50,7 +50,7 @@
     top: 0;
     left: 30%; /* must correspond to width of row title */
     width: 70%;
-    height: 100%;
+    height: calc(100% - 23px);
     display: flex;
     justify-content: space-between;
   }

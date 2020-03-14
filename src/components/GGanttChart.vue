@@ -144,9 +144,9 @@ export default {
           })
         }
         if(totalGapDistance && side === "left"){
-          bar.dragLimitLeft = bar.$el.offsetLeft -  totalGapDistance
+          bar.dragLimitLeft = bar.$refs['g-gantt-bar'].offsetLeft -  totalGapDistance
         } else if(totalGapDistance && side === "right"){
-          bar.dragLimitRight = bar.$el.offsetLeft+ bar.$el.offsetWidth + totalGapDistance
+          bar.dragLimitRight = bar.$refs['g-gantt-bar'].offsetLeft+ bar.$refs['g-gantt-bar'].offsetWidth + totalGapDistance
         }
       }
       // all bars from the bundle of the clicked bar need to have the same drag limit:
@@ -167,8 +167,8 @@ export default {
       // left side:
       if(side === "left"){
         while(nextBar){
-          let nextBarOffsetRight = nextBar.$el.offsetLeft + nextBar.$el.offsetWidth
-          gapDistanceSoFar += currentBar.$el.offsetLeft - nextBarOffsetRight
+          let nextBarOffsetRight = nextBar.$refs['g-gantt-bar'].offsetLeft + nextBar.$refs['g-gantt-bar'].offsetWidth
+          gapDistanceSoFar += currentBar.$refs['g-gantt-bar'].offsetLeft - nextBarOffsetRight
           if(nextBar.barConfig.immobile){
             return [gapDistanceSoFar, bundleBarsAndGapDist]
           } else if(nextBar.barConfig.bundle){
@@ -180,8 +180,8 @@ export default {
       }
       if(side === "right"){
         while(nextBar){
-          let currentBarOffsetRight = currentBar.$el.offsetLeft + currentBar.$el.offsetWidth
-          gapDistanceSoFar += nextBar.$el.offsetLeft - currentBarOffsetRight
+          let currentBarOffsetRight = currentBar.$refs['g-gantt-bar'].offsetLeft + currentBar.$refs['g-gantt-bar'].offsetWidth
+          gapDistanceSoFar += nextBar.$refs['g-gantt-bar'].offsetLeft - currentBarOffsetRight
           if(nextBar.barConfig.immobile){
             return [gapDistanceSoFar, bundleBarsAndGapDist]
           } else if(nextBar.barConfig.bundle){
@@ -198,18 +198,18 @@ export default {
       let allBarsLeftOrRight = []
       if(side === "left"){
         allBarsLeftOrRight = bar.$parent.$children.filter(gBar => {
-          return gBar.$parent === bar.$parent && gBar.$el.offsetLeft < bar.$el.offsetLeft
+          return gBar.$parent === bar.$parent && gBar.$refs['g-gantt-bar'].offsetLeft < bar.$refs['g-gantt-bar'].offsetLeft
         })
       } else {
         allBarsLeftOrRight = bar.$parent.$children.filter(gBar => {
-          return gBar.$parent === bar.$parent && gBar.$el.offsetLeft > bar.$el.offsetLeft
+          return gBar.$parent === bar.$parent && gBar.$refs['g-gantt-bar'].offsetLeft > bar.$refs['g-gantt-bar'].offsetLeft
         })
       }
       if(allBarsLeftOrRight.length > 0){
         return allBarsLeftOrRight.reduce(
           (bar1, bar2) => {
-            let bar1Dist = Math.abs(bar1.$el.offsetLeft - bar.$el.offsetLeft)
-            let bar2Dist = Math.abs(bar2.$el.offsetLeft - bar.$el.offsetLeft)
+            let bar1Dist = Math.abs(bar1.$refs['g-gantt-bar'].offsetLeft - bar.$refs['g-gantt-bar'].offsetLeft)
+            let bar2Dist = Math.abs(bar2.$refs['g-gantt-bar'].offsetLeft - bar.$refs['g-gantt-bar'].offsetLeft)
             return bar1Dist < bar2Dist ? bar1 : bar2
           },
           allBarsLeftOrRight[0]
@@ -254,6 +254,7 @@ export default {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    padding-bottom: 23px;
   }
 
   #g-gantt-chart >>> * {
