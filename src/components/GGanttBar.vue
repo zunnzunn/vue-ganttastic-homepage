@@ -6,6 +6,8 @@
         @mouseenter.stop="onMouseenter($event)"
         @mouseleave.stop ="onMouseleave($event)"
         @mousedown.stop="onMousedown($event)"
+        @dblclick="onDblclick($event)"
+        @contextmenu="onContextmenu($event)"
     >
       <div class="g-gantt-bar-label">
         <slot name="bar-label" :bar="bar">
@@ -55,6 +57,7 @@ export default {
     "initDragOfBarsFromBundle",
     "moveBarsFromBundleOfPushedBar",
     "setDragLimitsOfGanttBar",
+    "onBarEvent",
     "onDragendBar"
   ],
 
@@ -128,16 +131,18 @@ export default {
 
   methods:{
 
-    onMouseenter(){
+    onMouseenter(e){
       if(this.tooltipTimeout){
         clearTimeout(this.tooltipTimeout)
       }
       this.tooltipTimeout = setTimeout(() => this.showTooltip = true, 800)
+      this.onBarEvent(e, this)
     },
 
-    onMouseleave(){
+    onMouseleave(e){
       clearTimeout(this.tooltipTimeout)
       this.showTooltip = false
+      this.onBarEvent(e, this)
     },
 
     onMousedown(e){
@@ -148,6 +153,7 @@ export default {
       this.setDragLimitsOfGanttBar(this)
       // initialize the dragging on next mousemove event:
       window.addEventListener("mousemove", this.onFirstMousemove, {once: true})
+      this.onBarEvent(e, this)
     },
 
     onFirstMousemove(e){
@@ -190,6 +196,7 @@ export default {
       this.barStartMoment = this.mapPositionToTime(newXStart)
       this.barEndMoment = this.mapPositionToTime(newXEnd)
       this.manageOverlapping()
+      this.onBarEvent({...e, type: "drag"}, this)
     },
 
     dragByHandleLeft(e){

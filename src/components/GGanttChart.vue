@@ -122,6 +122,10 @@ export default {
       })
     },
 
+    onBarEvent(e, ganttBar){
+      this.$emit(`${e.type}-bar`, {event: e, bar: ganttBar.bar})
+    },
+    
     onDragendBar(e, ganttBar){
       let movedBarsInDrag = this.movedBarsInDrag
       this.movedBarsInDrag = new Set()
@@ -248,6 +252,7 @@ export default {
       initDragOfBarsFromBundle: (bundleId, e) => this.initDragOfBarsFromBundle(bundleId, e),
       moveBarsFromBundleOfPushedBar: (bar, minuteDiff, overlapType) => this.moveBarsFromBundleOfPushedBar(bar, minuteDiff, overlapType),
       setDragLimitsOfGanttBar : (ganttBar) => this.setDragLimitsOfGanttBar(ganttBar),
+      onBarEvent: (e, ganttBar) => this.onBarEvent(e, ganttBar),
       onDragendBar: (e, ganttBar) => this.onDragendBar(e, ganttBar)
     }
   }
