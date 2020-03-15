@@ -10,6 +10,7 @@
                       :row-label-width="`${rowLabelWidth}%`"
                       :row-height="rowHeight"
                       :theme="selectedTheme"
+                      @dragend-bar="stoppedDraggingBar($event)"
       >
         <g-gantt-row v-for="row in rowList"
                     :key="row.title"

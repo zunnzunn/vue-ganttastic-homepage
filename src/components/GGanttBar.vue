@@ -54,7 +54,8 @@ export default {
     "ganttChartProps",
     "initDragOfBarsFromBundle",
     "moveBarsFromBundleOfPushedBar",
-    "setDragLimitsOfGanttBar"
+    "setDragLimitsOfGanttBar",
+    "onDragendBar"
   ],
 
   data(){
@@ -64,6 +65,8 @@ export default {
       dragLimitLeft: null,
       dragLimitRight: null,
       isDragging: false,
+      isMainBarOfDrag: false, // is this the bar that was clicked on when starting to drag
+                              // or is it dragged along some other bar from the same bundle
       cursorOffsetX: 0,
       mousemoveCallback: null,  // gets initialized when starting to drag
                                 // possible values: drag, dragByHandleLeft, dragByHandleRight
@@ -143,11 +146,15 @@ export default {
         return
       }
       this.setDragLimitsOfGanttBar(this)
-      if(this.barConfig.bundle !== null && this.barConfig.bundle !== undefined){
-        this.initDragOfBarsFromBundle(this.barConfig.bundle, e)
-      } else {
-        this.initDrag(e)
-      }
+      // initialize the dragging on next mousemove event:
+      window.addEventListener("mousemove", this.onFirstMousemove, {once: true})
+    },
+
+    onFirstMousemove(e){
+      this.isMainBarOfDrag = true
+      // this method is injected here by GGanttChart.vue, and calls initDrag()
+      // for all GGanttBars that belong to the same bundle as this bar:
+      this.initDragOfBarsFromBundle(this, e)
     },
 
     /* --------------------------------------------------------- */
@@ -215,13 +222,17 @@ export default {
       return false
     },
 
-    endDrag(){
+    endDrag(e){
       this.isDragging = false
       this.dragLimitLeft = null
       this.dragLimitRight = null
       document.body.style.cursor = "auto"
       window.removeEventListener("mousemove", this.mousemoveCallback)
       window.removeEventListener("mouseup", this.endDrag)
+      if(this.isMainBarOfDrag){
+        this.onDragendBar(e, this)
+        this.isMainBarOfDrag = false
+      }
     },
 
     manageOverlapping(){
