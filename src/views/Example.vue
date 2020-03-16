@@ -33,7 +33,7 @@
       </g-gantt-chart>
     </div>
 
-    <v-card width="100%" height="35vh">
+    <v-card width="100%" height="35vh" color ="#dff2ea">
       <v-row class="pa-6">
         <v-col cols="3">
           <v-checkbox v-model="hideTimeaxis"
@@ -164,12 +164,6 @@ export default {
         {
           label: "Row #1",
           barList: [
-            {
-              myStart: "2020-03-02 18:00",
-              myEnd: "2020-03-02 23:00",
-              label: "Immobile",
-              ganttBarConfig: {color:"white", backgroundColor: "#404040", opacity: 0.5, immobile: true}
-            },
             {
               myStart: "2020-03-03 18:00",
               myEnd: "2020-03-03 23:00",

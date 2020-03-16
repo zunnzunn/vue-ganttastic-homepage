@@ -21,7 +21,7 @@
                 </v-btn>
               </template>
               <v-list dense>
-                <v-list-item>
+                <v-list-item to="docs">
                   <v-icon left>mdi-file-document</v-icon>
                   Docs
                 </v-list-item>

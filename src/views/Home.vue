@@ -18,7 +18,7 @@
 
     <v-col cols="3">
       <v-row justify="center">
-        <v-btn x-large color="primary" width="170">
+        <v-btn x-large color="primary" width="170" to="docs">
           <v-icon left>mdi-file-document</v-icon>
           <span>Docs</span>
         </v-btn>
@@ -27,7 +27,7 @@
 
     <v-col cols="3">
       <v-row justify="center" >
-        <v-btn x-large color="primary" to="example" width="170">
+        <v-btn x-large color="primary" width="170" to="example">
           <v-icon left>mdi-chart-gantt</v-icon>
           <span>Example</span>
         </v-btn>
