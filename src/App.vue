@@ -29,8 +29,11 @@
                   <v-icon left>mdi-chart-gantt</v-icon>
                   Example
                 </v-list-item>
-                <v-list-item>
-                  <v-icon left>mdi-git</v-icon>
+                <v-list-item 
+                  href="https://github.com/InfectoOne/vue-ganttastic"
+                  target="blank"
+                >
+                  <v-icon left>mdi-github</v-icon>
                   Github
                 </v-list-item>
               </v-list>
@@ -65,11 +68,12 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
   html {
     overflow-y: auto !important;
   }
 
   *{
-    font-family: "Quicksand"
+    font-family: "Catamaran"
   }
 </style>

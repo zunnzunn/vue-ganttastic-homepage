@@ -4,7 +4,10 @@
 
     <v-col cols="6">
       <v-row justify="center">
-        <img alt="Vue-Ganttastic logo" src="../assets/vue_ganttastic_logo.png" width="450">
+        <img
+          alt="Vue-Ganttastic logo"
+          src="../assets/vue_ganttastic_logo.png" width="450"
+        />
       </v-row>
     </v-col>
 
@@ -18,7 +21,12 @@
 
     <v-col cols="3">
       <v-row justify="center">
-        <v-btn x-large color="primary" width="170" to="docs">
+        <v-btn
+          x-large
+          color="primary"
+          width="170"
+          to="docs"
+        >
           <v-icon left>mdi-file-document</v-icon>
           <span>Docs</span>
         </v-btn>
@@ -27,7 +35,12 @@
 
     <v-col cols="3">
       <v-row justify="center" >
-        <v-btn x-large color="primary" width="170" to="example">
+        <v-btn
+          x-large
+          color="primary"
+          width="170"
+          to="example"
+        >
           <v-icon left>mdi-chart-gantt</v-icon>
           <span>Example</span>
         </v-btn>
@@ -36,8 +49,14 @@
 
     <v-col cols="3">
       <v-row justify="center">
-        <v-btn x-large color="primary" width="170">
-          <v-icon left>mdi-git</v-icon>
+        <v-btn 
+          x-large 
+          color="primary" 
+          width="170"
+          href="https://github.com/InfectoOne/vue-ganttastic"
+          target="blank"
+        >
+          <v-icon left>mdi-github</v-icon>
           <span>Github</span>
         </v-btn>
       </v-row>
