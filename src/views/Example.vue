@@ -271,8 +271,7 @@ export default {
 
   methods: {
 
-    stoppedDraggingBar(e){
-      console.log("Stopped dragging a bar. Event data:", e)
+    stoppedDraggingBar(){
     },
 
     onContextmenuBar(e){
