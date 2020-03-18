@@ -1,29 +1,6 @@
-# vue-ganttastic
+# Homepage of the vue-ganttastic project
 
-## Project setup
-```
-npm install
-```
+Includes the documentation and a live example demo of the vue-ganttastic component.  
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## vue-ganttastic
+The repository of the actual vue-ganttastic project can be found [here](https://github.com/InfectoOne/vue-ganttastic)

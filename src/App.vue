@@ -68,7 +68,8 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
+  
   html {
     overflow-y: auto !important;
   }

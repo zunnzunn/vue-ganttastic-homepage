@@ -1,31 +1,35 @@
 <template>
   <div>
     <div id="ganttastic-wrapper">
-      <g-gantt-chart :chart-start="chartStart"
-                      :chart-end="chartEnd"
-                      :grid="grid"
-                      :hide-timeaxis="hideTimeaxis"
-                      :push-on-overlap="pushOnOverlap"
-                      :highlighted-hours="highlightedHours"
-                      :row-label-width="`${rowLabelWidth}%`"
-                      :row-height="rowHeight"
-                      :theme="selectedTheme"
-                      @dragend-bar="stoppedDraggingBar($event)"
+      <g-gantt-chart
+        :chart-start="chartStart"
+        :chart-end="chartEnd"
+        :grid="grid"
+        :hide-timeaxis="hideTimeaxis"
+        :push-on-overlap="pushOnOverlap"
+        :highlighted-hours="highlightedHours"
+        :row-label-width="`${rowLabelWidth}%`"
+        :row-height="rowHeight"
+        :theme="selectedTheme"
+        @contextmenu-bar="onContextmenuBar($event)"
+        @dragend-bar="stoppedDraggingBar($event)"
       >
-        <g-gantt-row v-for="row in rowList"
-                    :key="row.title"
-                    :label="row.label"
-                    :bars="row.barList"
-                    :highlight-on-hover="highlightOnHover"
-                    bar-start="myStart"
-                    bar-end="myEnd"
+        <g-gantt-row 
+          v-for="row in rowList"
+          :key="row.title"
+          :label="row.label"
+          :bars="row.barList"
+          :highlight-on-hover="highlightOnHover"
+          bar-start="myStart"
+          bar-end="myEnd"
         >
           <template #bar-label="{bar}">
-            <img v-if="bar.image"
-                :src="require(`@/assets/${bar.image}`)"
-                height="20"
-                width="20"
-                class="mr-1"
+            <img
+              v-if="bar.image"
+              :src="require(`@/assets/${bar.image}`)"
+              height="20"
+              width="20"
+              class="mr-1"
             >
             <span>{{bar.label}}</span>
           </template>
@@ -36,69 +40,77 @@
     <v-card width="100%" height="35vh" color ="#dff2ea">
       <v-row class="pa-6">
         <v-col cols="3">
-          <v-checkbox v-model="hideTimeaxis"
-                      label="Hide timeaxis"
-                      hide-details
+          <v-checkbox
+            v-model="hideTimeaxis"
+            label="Hide timeaxis"
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-checkbox v-model="pushOnOverlap"
-                      label="Push on overlap"
-                      hide-details
+          <v-checkbox 
+            v-model="pushOnOverlap"
+            label="Push on overlap"
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-checkbox v-model="grid"
-                      label="Grid"
-                      hide-details
+          <v-checkbox 
+            v-model="grid"
+            label="Grid"
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-checkbox v-model="highlightOnHover"
-                      label="Highlight on hover"
-                      hide-details
+          <v-checkbox 
+            v-model="highlightOnHover"
+            label="Highlight on hover"
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-select v-model="selectedTheme"
-                    label="Theme"
-                    :items="themes"
-                    outlined
-                    dense
-                    hide-details
+          <v-select 
+            v-model="selectedTheme"
+            label="Theme"
+            :items="themes"
+            outlined
+            dense
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-slider v-model="rowHeight"
-                    label="Row height"
-                    :min="20"
-                    :max="100"
-                    hide-details
+          <v-slider
+            v-model="rowHeight"
+            label="Row height"
+            :min="20"
+            :max="100"
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-slider v-model="rowLabelWidth"
-                    label="Row label width"
-                    :min="10"
-                    :max="50"
-                    hide-details
+          <v-slider 
+            v-model="rowLabelWidth"
+            label="Row label width"
+            :min="10"
+            :max="50"
+            hide-details
           />
         </v-col>
 
         <v-col cols="3">
-          <v-select v-model="highlightedHours"
-                    label="Highlighted hours"
-                    :items="hours"
-                    multiple
-                    outlined
-                    dense
-                    hide-details
+          <v-select 
+            v-model="highlightedHours"
+            label="Highlighted hours"
+            :items="hours"
+            multiple
+            outlined
+            dense
+            hide-details
           />
         </v-col>
       </v-row>
@@ -106,9 +118,10 @@
 
     </v-card>
 
-    <v-menu v-model="showContextmenu"
-            :position-x="contextmenuX"
-            :position-y="contextmenuY"
+    <v-menu 
+      v-model="showContextmenu"
+      :position-x="contextmenuX"
+      :position-y="contextmenuY"
     >
       <v-list>
         <v-list-item>
@@ -176,8 +189,8 @@ export default {
               ganttBarConfig: {color:"white", backgroundColor: "#2e74a3", bundle: "blueBundle"}
             }
           ]
-          
         },
+
         {
           label: "Row #2",
           barList: [
@@ -201,8 +214,8 @@ export default {
               ganttBarConfig: {color:"white", backgroundColor: "#aa34a3"}
             }
           ]
-          
         },
+
         {
           label: "Row #3",
           barList: [
@@ -250,7 +263,8 @@ export default {
             }, 
           ]
         }
-      ],
+
+      ]
     }
   },
 
@@ -258,26 +272,20 @@ export default {
   methods: {
 
     stoppedDraggingBar(e){
-      console.log("Stopped dragging a bar:", e)
+      console.log("Stopped dragging a bar. Event data:", e)
     },
 
     onContextmenuBar(e){
-      this.contextmenuY = e.DOMEvent.clientY
-      this.contextmenuX = e.DOMEvent.clientX
+      e.event.preventDefault()
+      this.contextmenuY = e.event.clientY
+      this.contextmenuX = e.event.clientX
       this.showContextmenu = true
       if(this.contextmenuTimeout){
         clearTimeout(this.contextmenuTimeout)
       }
       this.contextmenuTimeout = setTimeout(() => this.showContextmenu = false, 3000)
-    },
-
-    onDropOnRow(e){
-      console.log("Dropped on row:", e)
-    },
-
-    drag(ev) {
-      ev.dataTransfer.setData("Text", ev.target.id);
     }
+
   }
 }
 </script>
