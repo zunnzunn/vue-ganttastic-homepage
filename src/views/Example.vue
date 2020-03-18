@@ -121,8 +121,7 @@
 </template>
 
 <script>
-import GGanttChart from '@/components/GGanttChart.vue'
-import GGanttRow from '@/components/GGanttRow.vue'
+import {GGanttChart, GGanttRow} from 'vue-ganttastic'
 
 export default {
   components: {
