@@ -40,6 +40,8 @@
     <v-card class="pa-2" flat>
       <v-row justify="end">
         <v-btn
+          dark
+          color="primary"
           small 
           class="mr-4"
           href="https://github.com/InfectoOne/vue-ganttastic-homepage/blob/master/src/views/Example.vue"

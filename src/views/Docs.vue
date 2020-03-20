@@ -64,11 +64,11 @@ export default {
           title: "Installation",
           titleIcon: "mdi-download",
           htmlContent: `
-            If you use <kbd>npm</kbd> in your project, you can install Vue-Ganttastic by typing<br>
+            You can quickly install Vue-Ganttastic using npm: <br>
             <kbd class="ma-4">npm install vue-ganttastic</kbd> <br>
-            in the command line in the root folder of your project. <br> <br>
             If you do not use <kbd>npm</kbd> in your project, the only alternative is to directly copy and paste
-            all files from the <code>components</code> folder found in the <a>Vue-Ganttastic GitHub repository</a>
+            all files from the <code>components</code> folder found in the
+            <a href="https://github.com/InfectoOne/vue-ganttastic" target="blank">Vue-Ganttastic GitHub repository</a>
             and import the <code>GGanttChart</code> and <code>GGanttRow</code> components manually
             wherever you need them (or register them globally).
           `,
@@ -120,6 +120,30 @@ export default {
             similarly to how you
             <a href="https://vuejs.org/v2/guide/class-and-style.html#Binding-Inline-Styles">bind styles</a>
             in Vue.js generally.
+          `
+        },
+        {
+          id: "bundles",
+          title: "Bundled Bars",
+          titleIcon: "mdi-package-variant-closed",
+          htmlContent: `
+            In some cases, you may want to "bundle" two or more bars together in such a way that when one bar is dragged,
+            the other one is dragged alongside it, too. For such cases, you may add a <code>bundle</code> string property to a bar's
+            <code>ganttBarConfig</code> nested object. All other bars that have the same value of <code>bundle</code> will move with that bar.
+          `
+        },
+        {
+          id: "events",
+          title: "Bar Events",
+          titleIcon: "mdi-exclamation",
+          htmlContent: `
+            The <code>g-gantt-chart</code> component emits special events related to the bars it contains. 
+            The events follow the naming convention <code><event name>-bar</code> (e.g. <code>mousedown-bar</code>)
+            and the data delivered with is an object in the form <code>{event, bar}</code>. <br>
+            <code> event </code> is the native DOM event object that you would usually get. <code> bar </code> is the affected bar object. <br>
+            The event <code>dragend-bar</code> contains an additional property: <code>movedBars</code>,
+            a list (set) of all bars that have been moved since the drag was started. You may use this event if you e.g.
+            want to send a back-end call and save the changes after the user has dragged/pushed some of the bars in the Gantt chart.
           `
         }
       ],
