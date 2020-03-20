@@ -37,8 +37,27 @@
       </g-gantt-chart>
     </div>
 
-    <v-card width="100%" height="35vh" color ="#dff2ea">
-      <v-row class="pa-6">
+    <v-card class="pa-2" flat>
+      <v-row justify="end">
+        <v-btn
+          small 
+          class="mr-4"
+          href="https://github.com/InfectoOne/vue-ganttastic-homepage/blob/master/src/views/Example.vue"
+          target="blank"
+        >
+          <span>View code</span>
+          <v-icon right>mdi-code-tags</v-icon>
+        </v-btn>
+      </v-row>
+    </v-card>
+
+    <v-card 
+      width="100%"
+      height="28vh"
+      color ="#dff2ea"
+      class="d-none d-md-flex"
+    >
+      <v-row class="pa-2">
         <v-col cols="3">
           <v-checkbox
             v-model="hideTimeaxis"
@@ -114,8 +133,6 @@
           />
         </v-col>
       </v-row>
-      
-
     </v-card>
 
     <v-menu 

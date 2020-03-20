@@ -1,49 +1,56 @@
 <template>
   <v-container fluid>
-    <v-row no-gutters>
-
-      <v-col cols="3">
-        <v-navigation-drawer dark
-                            color="#34495E"
-                            permanent
-                            clipped
-                            fixed
+    <v-navigation-drawer 
+      dark
+      color="#34495E"
+      fixed
+      expand-on-hover
+      permanent
+      clipped
+      class="d-none d-md-flex"
+    >
+      <v-card 
+        class="pa-8"
+        color="#34495E"
+        flat
+      />
+      <v-list dense nav>
+        <v-list-item 
+          v-for="section in docSectionList"
+          :key="section.id"
+          @click="$vuetify.goTo(`#${section.id}`)"
         >
-          <v-card class="pa-8" color="#34495E" flat/>
-          <v-list dense nav>
-            <v-list-item v-for="section in docSectionList"
-                        :key="section.id"
-                        @click="$vuetify.goTo(`#${section.id}`)"
-            >
-              {{section.title}}
-            </v-list-item>
-          </v-list>
-        </v-navigation-drawer>
-      </v-col>
+          <v-icon left>
+            {{section.titleIcon}}
+          </v-icon>
+          <v-list-item-title>
+            {{section.title}}
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
-    <v-col cols="9">
-      <v-container>
-        <v-card v-for="section in docSectionList"
-                :key="section.id"
-                :id="section.id"
-                class="mt-4 mb-4"
-        >
-          <v-card-title>
-            <v-icon left color="teal darken-3"> {{section.titleIcon}}</v-icon>
-            <span>{{section.title}}</span>
-          </v-card-title>
-          <v-card-text>
-            <span v-html="section.htmlContent"/>
-            <v-card dark class="pa-2 mt-2">
-              Example code coming soon...
-            </v-card>
-            
-          </v-card-text>
+  <v-container>
+    <v-card v-for="section in docSectionList"
+            :key="section.id"
+            :id="section.id"
+            class="mt-4 mb-4"
+    >
+      <v-card-title>
+        <v-icon left color="teal darken-3"> {{section.titleIcon}}</v-icon>
+        <span>{{section.title}}</span>
+      </v-card-title>
+      <v-card-text>
+        <span v-html="section.htmlContent"/>
+        <v-card dark class="pa-2 mt-2">
+          Example code coming soon...
         </v-card>
-      </v-container>
-    </v-col>
-    </v-row>
+        
+      </v-card-text>
+    </v-card>
   </v-container>
+
+</v-container>
 </template>
 
 <script>

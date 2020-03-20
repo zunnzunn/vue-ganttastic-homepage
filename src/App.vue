@@ -3,7 +3,7 @@
     <v-app-bar color="primary" dense app>
       <v-row justify="space-between" align="center">
 
-        <v-col cols="8" class="pl-4">
+        <v-col cols="9" class="pl-4">
           <v-row align="center">
             <img src="@/assets/vue_ganttastic_logo_no_text.png" height="38" width="38" class="mr-2"/>
             <span class="white--text">Vue Ganttastic</span>
@@ -12,7 +12,7 @@
           </v-row>
         </v-col>
 
-        <v-col cols="4" class="pr-4">
+        <v-col cols="3">
           <v-row justify="end" align="center">
             <v-menu offset-y :nudge-left="80">
               <template #activator="{on}">
