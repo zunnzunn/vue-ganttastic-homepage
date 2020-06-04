@@ -77,12 +77,10 @@ export default {
           htmlContent: `
             You can quickly install Vue-Ganttastic using npm: <br>
             <kbd class="ma-4">npm install vue-ganttastic</kbd> <br>
-            If you do not use <kbd>npm</kbd> in your project, the only alternative is to directly copy and paste
-            all files from the <code>components</code> folder found in the
-            <a href="https://github.com/InfectoOne/vue-ganttastic" target="blank">GitHub repository</a>.
-            Bear in mind that <a href="https://momentjs.com/" target="blank">Moment.js</a> is a dependency,
-            so you will have to install it manually
-            if you are installing Vue-Ganttastic this way.  <br> <br>
+            <a href="https://momentjs.com/">Moment.js</a> is a peer-dependency of Vue-Ganttastic. In order for Vue-Ganttastic to work correctly, 
+            you need to install it in your project: <br>
+            <kbd class="ma-4">npm install moment</kbd> 
+            <br> <br>
             After Vue-Ganttastic has been installed, the two primary components <code>GGanttChart</code> and <code>GGanttRow</code>
             may be imported wherever needed. You may register them globally in your <code>main.js</code> 
             so that they're accessible in your entire Vue application or you may import
@@ -116,7 +114,7 @@ export default {
           htmlContent: `
             Get started by adding a <code>g-gantt-chart</code>
             to your template and defining the displayed time range by passing the props <code>chart-start</code>
-            and <code>chart-end</code> (ISO 8601 strings). <br><br>
+            and <code>chart-end</code> (recommended string format: <code>YYYY-MM-DD HH:mm</code>). <br><br>
             Add rows to the Gantt chart by adding <code>g-gantt-row</code>
             components to the template <i>(Note that the rows must be direct 
             children of the <code>g-gantt-chart</code> component)</i>
